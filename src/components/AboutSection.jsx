@@ -23,10 +23,6 @@ function AboutSection() {
   }, []);
 
   useEffect(() => {
-    console.log("Arrow in view:", arrowInView);
-  }, [arrowInView]);
-
-  useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('.timeline-content section');
       let current = 0;

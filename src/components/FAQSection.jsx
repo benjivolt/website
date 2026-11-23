@@ -1,3 +1,4 @@
+import { setupVideoVisibility } from '../utils/video-visibility.mjs';
 import React, { useRef, useState, useEffect } from 'react';
 
 const faqs = [
@@ -241,54 +242,11 @@ const FAQSection = () => {
     userPausedVideo9, userPausedVideo10, userPausedVideo11, userPausedVideo12
   ]); // Re-run when any userPausedVideo changes
 
-  // Ensure videos are loaded and visible on mobile
   useEffect(() => {
-    const videoRefs = [
-      video1Ref, video2Ref, video3Ref, video4Ref, video5Ref, video6Ref,
-      video7Ref, video8Ref, video9Ref, video10Ref, video11Ref, video12Ref
-    ];
-
-    videoRefs.forEach((ref, index) => {
-      if (ref.current) {
-        const video = ref.current;
-
-        // Force load the video
-        video.load();
-
-        // Ensure video is visible immediately
-        video.style.opacity = '1';
-        video.style.visibility = 'visible';
-
-        // Set up event listeners for mobile compatibility
-        const handleLoadedData = () => {
-          console.log(`FAQ Video ${index + 1} loaded and ready`);
-          video.style.opacity = '1';
-          video.style.visibility = 'visible';
-        };
-
-        const handleCanPlay = () => {
-          console.log(`FAQ Video ${index + 1} can play`);
-          video.style.opacity = '1';
-        };
-
-        const handleLoadedMetadata = () => {
-          console.log(`FAQ Video ${index + 1} metadata loaded`);
-          video.style.opacity = '1';
-          video.style.visibility = 'visible';
-        };
-
-        video.addEventListener('loadeddata', handleLoadedData);
-        video.addEventListener('canplay', handleCanPlay);
-        video.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-        // Cleanup function for this video
-        return () => {
-          video.removeEventListener('loadeddata', handleLoadedData);
-          video.removeEventListener('canplay', handleCanPlay);
-          video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        };
-      }
-    });
+    const cleanups = [video1Ref, video2Ref, video3Ref, video4Ref, video5Ref, video6Ref, video7Ref, video8Ref, video9Ref, video10Ref, video11Ref, video12Ref].map((ref) =>
+      setupVideoVisibility(ref.current)
+    );
+    return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
 
   const togglePlayPause = (videoRef, setIsPlaying, setUserPaused) => {

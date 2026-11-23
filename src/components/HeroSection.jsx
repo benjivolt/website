@@ -1,3 +1,4 @@
+import { setupVideoVisibility } from '../utils/video-visibility.mjs';
 import React, { useRef, useState, useEffect } from 'react';
 import VideoSection from './VideoSection';
 import '../index.css';
@@ -113,59 +114,11 @@ function HeroSection() {
     };
   }, [userPausedVideo1, userPausedVideo2, userPausedVideo3]); // Re-run when any userPausedVideo changes
 
-  // Ensure videos are loaded and visible on mobile
   useEffect(() => {
-    const videos = [
-      { ref: videoRef1.current, index: 1 },
-      { ref: videoRef2.current, index: 2 },
-      { ref: videoRef3.current, index: 3 }
-    ];
-
-    videos.forEach(({ ref: video, index }) => {
-      if (video) {
-        // Force load the video
-        video.load();
-
-        // Ensure video is visible immediately
-        video.style.opacity = '1';
-        video.style.visibility = 'visible';
-
-        // Set up event listeners for mobile compatibility
-        const handleLoadedData = () => {
-          // Video is loaded and ready to play
-          console.log(`Video ${index} loaded and ready`);
-          video.style.opacity = '1';
-          video.style.visibility = 'visible';
-        };
-
-        const handleCanPlay = () => {
-          // Video can start playing
-          console.log(`Video ${index} can play`);
-          video.style.opacity = '1';
-        };
-
-        const handleLoadedMetadata = () => {
-          // Video metadata loaded - ensure it's visible
-          console.log(`Video ${index} metadata loaded`);
-          video.style.opacity = '1';
-          video.style.visibility = 'visible';
-        };
-
-        video.addEventListener('loadeddata', handleLoadedData);
-        video.addEventListener('canplay', handleCanPlay);
-        video.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-        // Force a frame to be displayed
-        video.currentTime = 0.1;
-
-        // Cleanup
-        return () => {
-          video.removeEventListener('loadeddata', handleLoadedData);
-          video.removeEventListener('canplay', handleCanPlay);
-          video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        };
-      }
-    });
+    const cleanups = [videoRef1, videoRef2, videoRef3].map((ref) =>
+      setupVideoVisibility(ref.current, 0.1)
+    );
+    return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
 
   const togglePlayPause = (videoRef, setIsPlaying) => {

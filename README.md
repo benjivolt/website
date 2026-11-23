@@ -6,8 +6,10 @@ Built with React, Vite, Tailwind CSS and Framer Motion.
 
 ## Run it
 
-```
-npm install
+You need Node.js 20.19+ or 22.12+.
+
+```bash
+npm ci
 npm run dev
 ```
 
@@ -21,3 +23,13 @@ src/l-sit-program/ the free L-sit program page
 src/hooks/         useInView, used for scroll animations
 public/            images and videos
 ```
+
+## Maintenance
+
+```bash
+npm test
+npm run build
+npm audit
+```
+
+This is a static frontend. Checkout links point to Whop; no API server, database, or private API keys are required to run this repository. Keep the Vite development server on localhost and deploy the production `dist/` output.
