@@ -1,17 +1,23 @@
-# Calisthenics Blueprint Landing Page
+# BG Calisthenics website
 
-A high-converting landing page for a calisthenics program, inspired by the provided screenshots. Built with React and styled for strong visual impact and conversion.
+The site at [bgcalisthenics.com](https://www.bgcalisthenics.com/). It is a one-page landing site for my calisthenics programs, with a free L-sit program, transformation photos, testimonials and a program sign-up.
 
-## Features
-- Bold hero section with transformation images
-- Social proof with before/after photos
-- Personal introduction
-- Strong call-to-action buttons
-- Mobile responsive
+Built with React, Vite, Tailwind CSS and Framer Motion.
 
-## Getting Started
-1. Install dependencies: `npm install`
-2. Start the server: `npm run dev`
+## Run it
 
-## Replace Images
-Replace the images in the `/src/assets/` folder with your own before/after and profile photos.
+```
+npm install
+npm run dev
+```
+
+`npm run build` writes the production site to `dist/`.
+
+## Layout
+
+```
+src/components/    page sections (hero, program, testimonials, FAQ, call to action)
+src/l-sit-program/ the free L-sit program page
+src/hooks/         useInView, used for scroll animations
+public/            images and videos
+```
